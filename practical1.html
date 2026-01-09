@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bg change</title>
+</head>
+<body>
+    <h3>Q1</h3>
+    Enter any color to change bg : <input type="text" placeholder="Enter any color">
+    <h3>Q2</h3>
+    <input type="number" id="num1" placeholder="Enter mobile number">
+    <script>
+        const input = document.querySelector("input");
+        input.addEventListener("blur",()=>{
+            input.style.backgroundColor = input.value;
+        });
+        const numInput = document.querySelector("#num1");
+        numInput.addEventListener("input",()=>{
+            if(numInput.value.length > 10){
+                alert("Mobile number cannot exceed 10 digits");
+                numInput.value = numInput.value.slice(0,10);
+            }
+            if(numInput.value.length === 10){
+                alert("Valid mobile number");
+                numInput.style.backgroundColor = "lightgreen";
+            }
+            if(numInput.value.length < 10 ){
+                numInput.style.backgroundColor = "red";
+            }
+        });
+    </script>
+</body>
+</html>
