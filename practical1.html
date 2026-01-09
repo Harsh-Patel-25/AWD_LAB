@@ -10,6 +10,7 @@
     Enter any color to change bg : <input type="text" placeholder="Enter any color">
     <h3>Q2</h3>
     <input type="number" id="num1" placeholder="Enter mobile number">
+    <p></p>
     <script>
         const input = document.querySelector("input");
         input.addEventListener("blur",()=>{
@@ -29,6 +30,25 @@
                 numInput.style.backgroundColor = "red";
             }
         });
+        let Car = {
+            carModelName : "M4 competetion",
+            carColor : "Black",
+            carPrice : "INR 2 Cr",
+            speed : 250,
+            displaySpeed : ()=>{
+                console.log(speed);
+            },
+            increaseSpeed : ()=>{
+                console.log("Speed is increased.");
+            },
+            decreaseSpeed : ()=>{
+                console.log("Speed is decreased.");
+            }
+        }
+        console.log(Car);
+        let data = JSON.stringify(Car);
+        let p = document.querySelector("p");
+        p.innerText = data ;
     </script>
 </body>
 </html>
