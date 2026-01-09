@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .first {
+            border: 2px solid black;
+            height: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <h3>Q1. Change bgcolor after 30 sec.</h3>
+    <div class="first"></div>
+    <h3>Q2. Image animation with start/stop toggle button and user-defined frequency</h3>
+    <label for="imgfreq">Frequency (ms):</label>
+    <input type="number" id="imgfreq" placeholder="e.g. 1000" min="100"><br><br>
+    <div>
+        <img id="animImg" src="img1.jpg" alt="animation image" style="max-width:400px;display:block;">
+    </div>
+    <br>
+    <button id="toggleBtn">Start</button>
+    <span id="status" style="margin-left:10px">Stopped</span>
+    <script>
+        function getRanCol() {
+            let random1 = Math.floor(Math.random() * 255) + 1;
+            let random2 = Math.floor(Math.random() * 255) + 1;
+            let random3 = Math.floor(Math.random() * 255) + 1;
+            let randomColor = `rgb(${random1},${random2},${random3})`;
+            return randomColor;
+        }
+
+        let div = document.querySelector("div");
+        setInterval(() => {
+            div.style.backgroundColor = getRanCol();
+        }, 30000);
+
+        const imgs = ["img1.jpg", "img2.jpg", "img3.jpg", "img4.jpg"];
+        const imgElem = document.getElementById('animImg');
+        const freqInput = document.getElementById('imgfreq');
+        const toggleBtn = document.getElementById('toggleBtn');
+        const status = document.getElementById('status');
+
+        let intervalId = null;
+        let currentIndex = 0;
+
+        function startAnimation() {
+            let ms = parseInt(freqInput.value, 10);
+            imgElem.src = imgs[currentIndex];
+            intervalId = setInterval(() => {
+                currentIndex = (currentIndex + 1) % imgs.length;
+                imgElem.src = imgs[currentIndex];
+            }, ms);
+            toggleBtn.textContent = 'Stop';
+            status.textContent = 'Running';
+        }
+
+        function stopAnimation() {
+            clearInterval(intervalId);
+            intervalId = null;
+            toggleBtn.textContent = 'Start';
+            status.textContent = 'Stopped';
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            if (intervalId) {
+                stopAnimation();
+            } else {
+                startAnimation();
+            }
+        });
+    </script>
+</body>
+
+</html>
