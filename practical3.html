@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practical 3</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 60%;
+        }
+        th,
+        td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+        a {
+            cursor: pointer;
+            color: blue;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <h3>Q1. Write AJAX script to display the student details like Enrollment number and Name (in tabular
+        form) from XML file stored on the same web server. After displaying student details, when
+        enrolment number is clicked then it fetches city, address, pincode and other details for the
+        student</h3>
+    <h2>Student List</h2>
+    <table id="studentTable">
+        <tr>
+            <th>Enrollment No</th>
+            <th>Name</th>
+        </tr>
+    </table>
+
+    <h2>Student Full Details</h2>
+    <div id="details"></div>
+    <script>
+        let xmlData;
+
+        function loadStudents() {
+            let xhr = new XMLHttpRequest();
+            xhr.open("GET", "students.xml", true);
+            xhr.send();
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    xmlData = xhr.responseXML;
+                    displayStudents();
+                }
+            };
+        }
+
+        function displayStudents() {
+            let students = xmlData.getElementsByTagName("student");
+            let table = document.getElementById("studentTable");
+
+            for (let i = 0; i < students.length; i++) {
+                let enroll = students[i].getElementsByTagName("enrollment")[0].textContent;
+                let name = students[i].getElementsByTagName("name")[0].textContent;
+
+                let row = table.insertRow();
+                let cell1 = row.insertCell(0);
+                let cell2 = row.insertCell(1);
+
+                cell1.innerHTML = `<a onclick="showDetails(${i})">${enroll}</a>`;
+                cell2.innerHTML = name;
+            }
+        }
+
+        function showDetails(index) {
+            let student = xmlData.getElementsByTagName("student")[index];
+
+            let city = student.getElementsByTagName("city")[0].textContent;
+            let address = student.getElementsByTagName("address")[0].textContent;
+            let pincode = student.getElementsByTagName("pincode")[0].textContent;
+
+            document.getElementById("details").innerHTML =
+                `<p><b>City:</b> ${city}</p>
+         <p><b>Address:</b> ${address}</p>
+         <p><b>Pincode:</b> ${pincode}</p>`;
+        }
+
+        loadStudents();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<students>
+    <student>
+        <enrollment>12302080501005</enrollment>
+        <name>Bhavya Patel</name>
+        <city>Anand</city>
+        <address>Spec clg</address>
+        <pincode>388120</pincode>
+    </student>
+
+    <student>
+        <enrollment>12302080501015</enrollment>
+        <name>Harsh Patel</name>
+        <city>Undel</city>
+        <address>Khambhat</address>
+        <pincode>388640</pincode>
+    </student>
+</students>
