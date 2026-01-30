@@ -1,87 +1,81 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="orderApp">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Order Form using AngularJS</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practical 4</title>
     <style>
         table {
             border-collapse: collapse;
-            width: 70%;
+            width: 60%;
         }
-
-        th, td {
+        th,
+        td {
             border: 1px solid black;
             padding: 8px;
             text-align: center;
         }
-
-        input {
-            width: 60px;
+        a {
+            cursor: pointer;
+            color: blue;
+            text-decoration: underline;
         }
     </style>
 </head>
-
-<body ng-controller="orderController">
-
-    <h2>Order Form of Titronic</h2>
-
-    <table>
+<body>
+    <h3>Q1. Write AJAX script to display the student details like
+        Enrollment number and Name (in tabular form) from XML
+        file stored on the same web server. After displaying
+        student details, when enrolment number is clicked then it
+        fetches city, address, pincode and other details for the
+        student. </h3>
+    <h2>Student List</h2>
+    <table id="studentTable">
         <tr>
-            <th>Product Name</th>
-            <th>Price (₹)</th>
-            <th>Quantity</th>
-            <th>Total (₹)</th>
-        </tr>
-
-        <tr ng-repeat="p in products">
-            <td>{{p.name}}</td>
-            <td>{{p.price}}</td>
-            <td>
-                <input type="number" ng-model="p.qty" min="0" placeholder="0">
-            </td>
-            <td>{{p.price * p.qty}}</td>
+            <th>Enrollment No</th>
+            <th>Name</th>
         </tr>
     </table>
-
-    <br>
-
-    <h3>Bill Amount: ₹ {{billAmount()}}</h3>
-    <h3>GST (18%): ₹ {{gstAmount()}}</h3>
-    <h3>Total Payable Amount: ₹ {{totalAmount()}}</h3>
-
+    <h2>Student Full Details</h2>
+    <div id="details"></div>
     <script>
-        var app = angular.module("orderApp", []);
-
-        app.controller("orderController", function ($scope) {
-
-            $scope.products = [
-                { name: "Titronic V1 Laptop", price: 100000, qty: 0 },
-                { name: "Titronic M1 Mouse", price: 1000, qty: 0 },
-                { name: "Titronic K1 Keyboard", price: 8000, qty: 0 },
-                { name: "Titronic H1 Headphones", price: 15000, qty: 0 },
-                { name: "Titronic P1 Pendrive", price: 1000, qty: 0 }
-            ];
-
-            $scope.billAmount = function () {
-                let total = 0;
-                angular.forEach($scope.products, function (p) {
-                    total += p.price * p.qty;
-                });
-                return total;
+        let xmlData;
+        function loadStudents() {
+            let xhr = new XMLHttpRequest();
+            xhr.open("GET", "students.xml", true);
+            xhr.send();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    xmlData = xhr.responseXML;
+                    displayStudents();
+                }
             };
-
-            $scope.gstAmount = function () {
-                return $scope.billAmount() * 0.18;
-            };
-
-            $scope.totalAmount = function () {
-                return $scope.billAmount() + $scope.gstAmount();
-            };
-        });
+        }
+        function displayStudents() {
+            let students = xmlData.getElementsByTagName("student");
+            let table = document.getElementById("studentTable");
+            for (let i = 0; i < students.length; i++) {
+                let enroll = students[i].getElementsByTagName("enrollment")[0].textContent;
+                let name = students[i].getElementsByTagName("name")[0].textContent;
+                let row = table.insertRow();
+                let cell1 = row.insertCell(0);
+                let cell2 = row.insertCell(1);
+                cell1.innerHTML = `<a onclick="showDetails(${i})">${enroll}</a>`;
+                cell2.innerHTML = name;
+            }
+        }
+        function showDetails(index) {
+            let student = xmlData.getElementsByTagName("student")[index];
+            let city = student.getElementsByTagName("city")[0].textContent;
+            let address = student.getElementsByTagName("address")[0].textContent;
+            let pincode = student.getElementsByTagName("pincode")[0].textContent;
+            document.getElementById("details").innerHTML =
+                `<p><b>City:</b> ${city}</p>
+         <p><b>Address:</b> ${address}</p>
+         <p><b>Pincode:</b> ${pincode}</p>`;
+        }
+        loadStudents();
     </script>
-
 </body>
 </html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="calcApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practical 7</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 30px;
+        }
+        .box {
+            width: 450px;
+        }
+        input {
+            width: 250px;
+            padding: 8px;
+            margin: 8px 0;
+        }
+        button {
+            padding: 10px 30px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        h3 {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body ng-controller="calcCtrl">
+    <div class="box">
+        <h2>AngularJS Service Add / Sub</h2>
+        <label><b>Enter Number A:</b></label>
+        <input type="number" ng-model="num1" placeholder="enter num1">
+        <br>
+        <label><b>Enter Number B:</b></label>
+        <input type="number" ng-model="num2" placeholder="enter num2">
+        <br><br>
+        <button ng-click="add()">Add</button>
+        <button ng-click="sub()">Sub</button>
+        <h3>Result: {{ result }}</h3>
+    </div>
+    <script>
+        var app = angular.module("calcApp", []);
+        app.service("calcService", function () {
+            this.addition = function (a, b) {
+                return a + b;
+            };
+            this.subtraction = function (a, b) {
+                return a - b;
+            };
+        });
+        app.controller("calcCtrl", function ($scope, calcService) {
+            $scope.num1 = 0;
+            $scope.num2 = 0;
+            $scope.result = 0;
+            $scope.add = function () {
+                $scope.result = calcService.addition(Number($scope.num1), Number($scope.num2));
+            };
+            $scope.sub = function () {
+                $scope.result = calcService.subtraction(Number($scope.num1), Number($scope.num2));
+            };
+        });
+    </script>
+</body>
+</html>

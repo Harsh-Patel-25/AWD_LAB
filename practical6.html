@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practical 6</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body ng-controller="myCtrl">
+    <h2>Square of Number Using AngularJS Service</h2>
+    <label>Enter Number:</label>
+    <input type="number" ng-model="num" placeholder="Enter number">
+    <button ng-click="getSquare()">Square</button>
+    <h3>Result: {{ result }}</h3>
+    <script>
+        var app = angular.module("myApp", []);
+        app.service("squareService", function () {
+            this.square = function (n) {
+                return n * n;
+            };
+        });
+        app.controller("myCtrl", function ($scope, squareService) {
+            $scope.num = "";
+            $scope.result = "";
+            $scope.getSquare = function () {
+                $scope.result = squareService.square($scope.num);
+            };
+        });
+    </script>
+</body>
+</html>

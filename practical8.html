@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="studentApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practical 8</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <style>
+        body {
+            font-family: Arial;
+            padding: 30px;
+        }
+        select {
+            width: 250px;
+            padding: 8px;
+            margin-top: 10px;
+        }
+        h3 {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body ng-controller="studentCtrl">
+    <h2>Student Enrollment Dropdown (JSON Data)</h2>
+    <label for="enrollmentSelect"><b>Select Enrollment Number:</b></label>
+    <br>
+    <select id="enrollmentSelect" ng-model="selectedStudent"
+            ng-options="s.enrollment for s in students" title="Select Enrollment Number">
+        <option value="">-- Select Enrollment --</option>
+    </select>
+    <h3 ng-if="selectedStudent">
+        Selected Student Name: {{ selectedStudent.name }}
+    </h3>
+    <script>
+        var app = angular.module("studentApp", []);
+        app.controller("studentCtrl", function ($scope, $http) {
+            $scope.students = [];
+            $http.get("students.json")
+                .then(function (response) {
+                    $scope.students = response.data;
+                }, function (error) {
+                    console.log("Error while loading JSON data", error);
+                });
+        });
+    </script>
+</body>
+</html>

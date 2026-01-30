@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>service in Angularjs</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+
+<body ng-app="myApp" ng-controller="mathController">
+
+    Enter X: <input type="text" ng-model="x" placeholder="Enter x"><br><br>
+    Enter Y: <input type="text" ng-model="y" placeholder="Enter y"><br><br>
+    Result : <b>{{result}}</b><br><br>
+    <input type="button" value="Addition" ng-click="callAdd()">
+    <input type="button" value="Subtraction" ng-click="callSub()">
+    <input type="button" value="Multiplication" ng-click="callMul()">
+    <input type="button" value="Division" ng-click="callDiv()">
+
+    <script>
+        var myApp = angular.module("myApp", []);
+        myApp.controller("mathController", function ($scope, myService) {
+            $scope.x = 10;
+            $scope.y = 5;
+            $scope.result = 0;
+            $scope.callAdd = function(){
+                $scope.result = myService.addition($scope.x, $scope.y);
+            };
+            $scope.callSub = function(){
+                $scope.result = myService.subtraction($scope.x, $scope.y);
+            };
+            $scope.callMul = function(){
+                $scope.result = myService.multiplication($scope.x, $scope.y);
+            };
+            $scope.callDiv = function(){
+                $scope.result = myService.division($scope.x, $scope.y);
+            };
+        });
+
+        myApp.service("myService", function () {
+            this.addition = function (x, y) {
+                return parseInt(x) + parseInt(y);
+            }
+            this.subtraction = function (x, y) {
+                return parseInt(x) - parseInt(y);
+            }
+            this.multiplication = function (x, y) {
+                return parseInt(x) * parseInt(y);
+            }
+            this.division = function (x, y) {
+                return parseInt(x) / parseInt(y);
+            }
+        });
+    </script>
+</body>
+
+</html>
